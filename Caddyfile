@@ -1,0 +1,8 @@
+serverless-demo.hasura.app {
+  root /html
+  proxy /hge graphql-engine:8080 {
+	without /hge
+  	websocket
+  }
+}
+
