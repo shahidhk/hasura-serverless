@@ -16,7 +16,7 @@ services:
     image: caddy
     build:
       context: ../
-      dockerfile: ../Dockerfile
+      dockerfile: Dockerfile
     depends_on:
     - "graphql-engine"
     restart: always
