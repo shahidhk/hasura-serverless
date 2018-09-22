@@ -1,6 +1,6 @@
 const { query } = require('graphqurl');
 
-const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://hge-et-demo.herokuapp.com/v1alpha1/graphql';
+const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
 const MUTATION_RESTAURANT_APPROVAL = `
 mutation restaurantApproval(
   $object: restaurant_approval_insert_input!

@@ -27,7 +27,7 @@ mutation orderValidated($id: uuid!) {
  *                     More info: https://expressjs.com/en/api.html#res
  */
 exports.function = async (req, res) => {
-  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://hge-et-demo.herokuapp.com/v1alpha1/graphql';
+  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
 
   const { id, event: {op, data}, table } = req.body;
   console.log(`processing event ${id}`);
