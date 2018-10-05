@@ -1,8 +1,8 @@
-# Hasura GraphQL Engine with Event Triggers
+# Hasura GraphQL Engine | Event Triggers & Subscriptions
 
-A demo using Event Triggers with Hasura GraphQL Engine
+A demo using Event Triggers & Subscriptions with Hasura GraphQL Engine
 
-Place an order at https://shahidh.in/hasura-serverless/order-app/  
-See live analytics at https://shahidh.in/hasura-serverless/analytics-app/
+Place an order at https://serverless-demo-aws.hasura.app/order-app/
+See live analytics at https://serverless-demo-aws.hasura.app/analytics-app/
 
-HGE: https://hge-et-demo.herokuapp.com/
+HGE: https://serverless-demo-aws.hasura.app/
