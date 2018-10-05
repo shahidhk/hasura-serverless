@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   graphql-engine:
-    image: hasura/graphql-engine:v1.0.0-alpha20
+    image: hasura/graphql-engine:pull550-89a94f4
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
