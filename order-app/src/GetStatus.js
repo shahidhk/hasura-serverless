@@ -43,33 +43,28 @@ const createBar = (statusBar) => {
   );
 };
 
-export default ({validation, payment, restaurant_approval, agent_assignment}) => {
-
-  const order_valid = validation && validation.is_validated;
-  const payment_valid = payment && payment.is_success;
-  const approved = restaurant_approval && restaurant_approval.is_approved;
-  const driver_assigned = agent_assignment && agent_assignment.is_assigned;
+export default ({is_validated, is_paid, is_approved, is_agent_assigned}) => {
 
   const statusBar = JSON.parse(JSON.stringify(statuses));
-  if (!(order_valid)) {
+  if (!(is_validated)) {
     statusBar[0].value = 'running';
     return createBar(statusBar);
-  } else if (order_valid && !payment_valid) {
+  } else if (is_validated && !is_paid) {
     statusBar[0].value = 'done';
     statusBar[1].value = 'running';
     return createBar(statusBar);
-  } else if (payment_valid && !approved) {
+  } else if (is_paid && !is_approved) {
     statusBar[0].value ='done';
     statusBar[1].value ='done';
     statusBar[2].value ='running';
     return createBar(statusBar);
-  } else if (approved && !driver_assigned) {
+  } else if (is_approved && !is_agent_assigned) {
     statusBar[0].value ='done';
     statusBar[1].value ='done';
     statusBar[2].value ='done';
     statusBar[3].value ='running';
     return createBar(statusBar);
-  } else if (driver_assigned) {
+  } else if (is_agent_assigned) {
     statusBar[0].value ='done';
     statusBar[1].value ='done';
     statusBar[2].value ='done';

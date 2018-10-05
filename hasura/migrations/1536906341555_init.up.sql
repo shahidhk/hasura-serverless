@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.5 (Ubuntu 10.5-1.pgdg14.04+1)
--- Dumped by pg_dump version 10.5 (Ubuntu 10.5-0ubuntu0.18.04)
+-- Dumped from database version 10.3
+-- Dumped by pg_dump version 10.3 (Debian 10.3-1.pgdg90+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,8 +18,6 @@ SET row_security = off;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 --
 -- Name: agent_assignment; Type: TABLE; Schema: public; Owner: -
@@ -50,7 +48,11 @@ CREATE TABLE public.item (
 CREATE TABLE public."order" (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    user_name text NOT NULL
+    user_name text NOT NULL,
+    is_validated boolean DEFAULT false NOT NULL,
+    is_paid boolean DEFAULT false NOT NULL,
+    is_approved boolean DEFAULT false NOT NULL,
+    is_agent_assigned boolean DEFAULT false NOT NULL
 );
 
 
@@ -69,7 +71,60 @@ CREATE VIEW public.number_order AS
 
 CREATE VIEW public.number_order_agent_assigned AS
  SELECT count(*) AS count
-   FROM public.agent_assignment;
+   FROM public."order"
+  WHERE ("order".is_agent_assigned = true);
+
+
+--
+-- Name: number_order_payment_valid; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.number_order_payment_valid AS
+ SELECT count(*) AS count
+   FROM public."order"
+  WHERE ("order".is_paid = true);
+
+
+--
+-- Name: number_order_restaurant_approved; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.number_order_restaurant_approved AS
+ SELECT count(*) AS count
+   FROM public."order"
+  WHERE ("order".is_approved = true);
+
+
+--
+-- Name: number_order_validated; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.number_order_validated AS
+ SELECT count(*) AS count
+   FROM public."order"
+  WHERE ("order".is_validated = true);
+
+
+--
+-- Name: order_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.order_item (
+    order_id uuid NOT NULL,
+    item_id uuid NOT NULL
+);
+
+
+--
+-- Name: order_validation; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.order_validation (
+    order_id uuid NOT NULL,
+    is_validated boolean DEFAULT false NOT NULL,
+    validated_at timestamp with time zone DEFAULT now() NOT NULL,
+    reason text
+);
 
 
 --
@@ -86,15 +141,6 @@ CREATE TABLE public.payment (
 
 
 --
--- Name: number_order_payment_valid; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.number_order_payment_valid AS
- SELECT count(*) AS count
-   FROM public.payment;
-
-
---
 -- Name: restaurant_approval; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -102,46 +148,6 @@ CREATE TABLE public.restaurant_approval (
     order_id uuid NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     is_approved boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: number_order_restaurant_approved; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.number_order_restaurant_approved AS
- SELECT count(*) AS count
-   FROM public.restaurant_approval;
-
-
---
--- Name: order_validation; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.order_validation (
-    order_id uuid NOT NULL,
-    is_validated boolean DEFAULT false NOT NULL,
-    validated_at timestamp with time zone DEFAULT now() NOT NULL,
-    reason text
-);
-
-
---
--- Name: number_order_validated; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.number_order_validated AS
- SELECT count(*) AS count
-   FROM public.order_validation;
-
-
---
--- Name: order_item; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.order_item (
-    order_id uuid NOT NULL,
-    item_id uuid NOT NULL
 );
 
 

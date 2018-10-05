@@ -13,18 +13,10 @@ const GET_ORDERS = gql`
     order(where: {user_name: {_eq: $user}}, order_by: created_at_desc, limit: 20) {
       id
       created_at
-      validation {
-        is_validated
-      }
-      payment {
-        is_success
-      }
-      restaurant_approval {
-        is_approved
-      }
-      agent_assignment {
-        is_assigned
-      }
+      is_validated
+      is_paid
+      is_approved
+      is_agent_assigned
     }
   }
 `;
@@ -45,7 +37,7 @@ class MakeAllPayment  extends React.Component {
   onClick () {
     this.setState({loading: true , ...this.state});
     const _this = this;
-    fetch('https://us-central1-hasura-serverless.cloudfunctions.net/pay_all',
+    fetch('https://9x0r13ozp5.execute-api.ap-southeast-1.amazonaws.com/default/pay_all',
           {
             method: 'POST',
             headers: {

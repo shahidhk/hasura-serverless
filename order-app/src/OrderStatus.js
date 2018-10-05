@@ -13,18 +13,10 @@ const GET_ORDERS = gql`
     order(where: {user_name: {_eq: $user}, id: {_eq: $order_id}}, order_by: created_at_asc) {
       id
       created_at
-      validation {
-        is_validated
-      }
-      payment {
-        is_success
-      }
-      restaurant_approval {
-        is_approved
-      }
-      agent_assignment {
-        is_assigned
-      }
+      is_validated
+      is_paid
+      is_approved
+      is_agent_assigned
     }
   }
 `;
@@ -102,10 +94,10 @@ class MakePayment extends React.Component {
   onClick () {
     this.setState({loading: true});
     const _this = this;
-    fetch('https://us-central1-hasura-serverless.cloudfunctions.net/make_payment',
-      {
-        method: 'POST',
-        headers: {
+    fetch('https://uep8z127z2.execute-api.ap-southeast-1.amazonaws.com/default/make_payment',
+          {
+            method: 'POST',
+            headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -131,13 +123,13 @@ class MakePayment extends React.Component {
   }
 
   render () {
-    if (!(this.props.order.validation && this.props.order.validation.is_validated)) {
+    if (!(this.props.order.is_validated)) {
       return (
         <Button bsStyle="primary" disabled>Waiting to make payment...</Button>
       )
     }
 
-    if (this.props.order.payment && this.props.order.payment.is_success) {
+    if (this.props.order.is_paid) {
       return (
         null
       )
