@@ -29,5 +29,6 @@ RUN npm run build
 FROM abiosoft/caddy:0.11.0
 
 WORKDIR /html
+COPY index.html index.html
 COPY --from=builder /order-app/build order-app/
 COPY --from=builder /analytics-app/build analytics-app/

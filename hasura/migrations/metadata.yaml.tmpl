@@ -1,0 +1,134 @@
+query_templates: []
+tables:
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: agent_assignment
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: item
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: number_order_payment_valid
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers:
+  - definition:
+      insert:
+        columns:
+        - id
+        - created_at
+        - user_name
+        - is_validated
+        - is_paid
+        - is_approved
+        - is_agent_assigned
+        payload: '*'
+    name: validate_order
+    retry_conf:
+      interval_sec: 30
+      num_retries: 5
+    webhook: ${VALIDATE_ORDER}
+  - definition:
+      update:
+        columns:
+        - is_paid
+        payload: '*'
+    name: restaurant_approval
+    retry_conf:
+      interval_sec: 30
+      num_retries: 5
+    webhook: ${RESTAURANT_APPROVAL}
+  - definition:
+      update:
+        columns:
+        - is_approved
+        payload: '*'
+    name: agent_assignment
+    retry_conf:
+      interval_sec: 30
+      num_retries: 5
+    webhook: ${AGENT_ASSIGNMENT}
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: order
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: number_order_agent_assigned
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: payment
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: number_order
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: number_order_validated
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: restaurant_approval
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: order_item
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: number_order_restaurant_approved
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table: order_validation
+  update_permissions: []
