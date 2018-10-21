@@ -11,7 +11,7 @@ ENV PAY_ALL_URL=${PAY_ALL_URL}
 ENV MAKE_PAYMENT_URL=${MAKE_PAYMENT_URL}
 
 # build order app
-ENV  PUBLIC_URL=${ORDER_APP_URL}
+ENV PUBLIC_URL=${ORDER_APP_URL}
 WORKDIR /order-app
 COPY order-app/package.json package.json
 RUN npm install
