@@ -1,6 +1,5 @@
 {
   "name": "order-app",
-  "homepage": "https://serverless-demo-aws.hasura.app/order-app/",
   "version": "0.1.0",
   "private": true,
   "engines": {

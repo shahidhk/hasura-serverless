@@ -7,6 +7,7 @@ import {Subscription} from "react-apollo";
 import getStatus from './GetStatus';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+const MAKE_PAYMENT_URL = process.env.MAKE_PAYMENT_URL;
 
 const GET_ORDERS = gql`
   subscription fetch_orders($user: String!, $order_id: uuid! ) {
@@ -94,7 +95,7 @@ class MakePayment extends React.Component {
   onClick () {
     this.setState({loading: true});
     const _this = this;
-    fetch('https://uep8z127z2.execute-api.ap-southeast-1.amazonaws.com/default/make_payment',
+    fetch(MAKE_PAYMENT_URL,
           {
             method: 'POST',
             headers: {

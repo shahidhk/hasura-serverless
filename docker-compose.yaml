@@ -10,6 +10,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        HGE_HOSTNAME: serverless-demo.hasura.app
+        PAY_ALL_URL: https://us-central1-hasura-serverless.cloudfunctions.net/pay_all
+        MAKE_PAYMENT_URL: https://us-central1-hasura-serverless.cloudfunctions.net/make_payment
+        ORDER_APP_URL: https://serverless-demo.hasura.app/order-app/
+        ANALYTICS_APP_URL: https://serverless-demo.hasura.app/analytics-app/
     depends_on:
     - "graphql-engine"
     restart: always

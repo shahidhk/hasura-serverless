@@ -5,10 +5,8 @@
 
 const { query } = require('graphqurl');
 
-const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
-
 const MUTATION_INSERT_PAYMENT = `
-mutation processPayment($object: payment_insert_input!) {
+mutation processPayment($object: payment_insert_input!, $id: uuid!) {
   insert_payment(objects:[$object], on_conflict: {
     action: ignore,
     constraint: payment_pkey
@@ -17,6 +15,12 @@ mutation processPayment($object: payment_insert_input!) {
     returning {
       created_at
     }
+  }
+  update_order(
+    _set:{is_paid: true},
+    where: {id: {_eq: $id}}
+  ) {
+    affected_rows
   }
 }`;
 
@@ -31,17 +35,16 @@ mutation processPayment($object: payment_insert_input!) {
  *                     More info: https://expressjs.com/en/api.html#res
  */
 exports.function = async (req, res) => {
+  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
+
   // handle CORS since this function is triggered from browser
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST');
+  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   if (req.method == "OPTIONS") {
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET, POST');
-    res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.status(204).send('');
     return;
   }
-  res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "GET, POST");
-  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
   const { order_id, metadata: { type, amount }} = req.body;
 
@@ -59,7 +62,7 @@ exports.function = async (req, res) => {
     const response = await query({
       endpoint: HGE_ENDPOINT,
       query: MUTATION_INSERT_PAYMENT,
-      variables: { object: {order_id, type, amount, is_success} }
+      variables: { object: {order_id, type, amount, is_success}, id: order_id}
     });
     data = response.data;
   } catch (error) {
@@ -77,6 +80,6 @@ const process_payment = (order_id) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(true);
-    }, 5000);
+    }, 1000);
   });
 };

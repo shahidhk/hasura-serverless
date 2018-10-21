@@ -1,20 +1,26 @@
 const { query } = require('graphqurl');
 
-const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
-const MUTATION_ASSIGN_AGENT = `
-mutation assignAgent(
-  $object: agent_assignment_insert_input!
+const MUTATION_RESTAURANT_APPROVAL = `
+mutation restaurantApproval(
+  $object: restaurant_approval_insert_input!,
+  $id: uuid!
 ) {
-  insert_agent_assignment(
+  insert_restaurant_approval(
     objects: [$object],
     on_conflict: {
       action: ignore,
-      constraint: agent_assignment_pkey
+      constraint: restaurant_approval_pkey
     }
 ) {
     returning {
       created_at
     }
+    affected_rows
+  }
+  update_order(
+    _set:{is_approved: true},
+    where: {id: {_eq: $id}}
+  ) {
     affected_rows
   }
 }`;
@@ -30,27 +36,29 @@ mutation assignAgent(
  *                     More info: https://expressjs.com/en/api.html#res
  */
 exports.function = async (req, res) => {
+  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
+
   const { id, event: {op, data}, table } = req.body;
   console.log(`processing event ${id}`);
 
-  if (op === 'INSERT' && table.name === 'restaurant_approval') {
+  if (data.new.is_paid) {
     // get the order id
-    const order_id = data.new.order_id;
+    const order_id = data.new.id;
 
-    // execute the agent assignment logic
-    const { is_assigned, agent_id } = await assign_agent(order_id);
-    if (!is_assigned) {
+    // execute the restaurant approval logic
+    const is_approved = await restaurant_approval(order_id);
+    if (!is_approved) {
       res.status(500);
-      res.json({error: true, data: 'assignment failed'});
+      res.json({error: true, data: 'approval failed'});
       return;
     }
 
-    // once assigned, write back the status
+    // once approved, write back the status
     try {
       const mutationResponse = await query({
         endpoint: HGE_ENDPOINT,
-        query: MUTATION_ASSIGN_AGENT,
-        variables: { object: { is_assigned, agent_id, order_id }},
+        query: MUTATION_RESTAURANT_APPROVAL,
+        variables: { object: { order_id, is_approved }, id: order_id },
       });
       res.json({error: false, data: mutationResponse});
     } catch (err) {
@@ -63,21 +71,13 @@ exports.function = async (req, res) => {
   }
 };
 
-const assign_agent = (order_id) => {
-  // do the agent assignment logic here
-  // typically, this would include picking up a free agent and
-  // assigning them
+const restaurant_approval = (id) => {
+  // do the restaurant approval logic here
+  // typically, this would notify the restaurant and when they accept
+  // returns immediately or executes another function which marks status
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve({ is_assigned: true, agent_id: newUUID()});
+      resolve(true);
     }, 10);
   });
-};
-
-const newUUID = () => {
-  const p8 = (s) => {
-    let p = (Math.random().toString(16) + "000000000").substr(2 ,8);
-    return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
-  };
-  return p8() + p8(true) + p8(true) + p8();
 };

@@ -7,6 +7,7 @@ import {Subscription} from "react-apollo";
 import getStatus from './GetStatus';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
+const PAY_ALL_URL = process.env.PAY_ALL_URL;
 
 const GET_ORDERS = gql`
   subscription fetch_orders($user: String!) {
@@ -37,7 +38,7 @@ class MakeAllPayment  extends React.Component {
   onClick () {
     this.setState({loading: true , ...this.state});
     const _this = this;
-    fetch('https://9x0r13ozp5.execute-api.ap-southeast-1.amazonaws.com/default/pay_all',
+    fetch(PAY_ALL_URL,
           {
             method: 'POST',
             headers: {

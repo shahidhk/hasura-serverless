@@ -1,6 +1,6 @@
 const { query } = require('graphqurl');
 
-MUTATION_MARK_ORDER_VALIDATED = `
+const MUTATION_MARK_ORDER_VALIDATED = `
 mutation orderValidated($id: uuid!) {
   insert_order_validation(objects:[{
     is_validated: true,
@@ -13,6 +13,13 @@ mutation orderValidated($id: uuid!) {
     returning {
       validated_at
     }
+  }
+
+  update_order(
+    _set:{is_validated: true},
+    where: {id: {_eq: $id}}
+  ) {
+    affected_rows
   }
 }`;
 
