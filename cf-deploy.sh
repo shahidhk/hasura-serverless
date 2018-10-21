@@ -2,7 +2,7 @@
 
 HGE_ENDPOINT="https://serverless-demo.hasura.app/hge/v1alpha1/graphql"
 
-cfs=$(ls lambdas)
+cfs=$(ls google-cloud-fns)
 
 for cf in $cfs; do
     if [ "$cf" == "README.md" ]; then
