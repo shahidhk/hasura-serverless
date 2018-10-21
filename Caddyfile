@@ -1,4 +1,4 @@
-serverless-demo-aws.hasura.app {
+serverless-demo.hasura.app {
   root /html
 
   proxy /v1 graphql-engine:8080
