@@ -7,7 +7,7 @@ import {Subscription} from "react-apollo";
 import getStatus from './GetStatus';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
-const MAKE_PAYMENT_URL = process.env.MAKE_PAYMENT_URL;
+const MAKE_PAYMENT_URL = process.env.REACT_APP_MAKE_PAYMENT_URL;
 
 const GET_ORDERS = gql`
   subscription fetch_orders($user: String!, $order_id: uuid! ) {

@@ -8,7 +8,7 @@ import { getMainDefinition } from 'apollo-utilities';
 
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-export const HASURA_GRAPHQL_ENGINE_HOSTNAME = process.env.HGE_HOSTNAME || 'serverless-demo.hasura.app';
+export const HASURA_GRAPHQL_ENGINE_HOSTNAME = process.env.REACT_APP_HGE_HOSTNAME || 'serverless-demo.hasura.app';
 
 const wsurl = `wss://${HASURA_GRAPHQL_ENGINE_HOSTNAME}/v1alpha1/graphql`;
 const httpurl = `https://${HASURA_GRAPHQL_ENGINE_HOSTNAME}/v1alpha1/graphql`;

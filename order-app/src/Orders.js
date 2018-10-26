@@ -7,7 +7,7 @@ import {Subscription} from "react-apollo";
 import getStatus from './GetStatus';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
-const PAY_ALL_URL = process.env.PAY_ALL_URL;
+const PAY_ALL_URL = process.env.REACT_APP_PAY_ALL_URL;
 
 const GET_ORDERS = gql`
   subscription fetch_orders($user: String!) {
