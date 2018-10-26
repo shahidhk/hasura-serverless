@@ -1,5 +1,6 @@
 {
   "name": "analytics-app",
+  "homepage": "https://serverless-demo.hasura.app/analytics-app/",
   "version": "0.1.0",
   "private": true,
   "engines": {
