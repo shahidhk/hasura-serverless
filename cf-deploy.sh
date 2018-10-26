@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-HGE_ENDPOINT="https://serverless-demo.hasura.app/hge/v1alpha1/graphql"
+HGE_ENDPOINT="https://serverless-demo.hasura.app/v1alpha1/graphql"
 
 cfs=$(ls google-cloud-fns)
 

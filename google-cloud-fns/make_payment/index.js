@@ -35,7 +35,7 @@ mutation processPayment($object: payment_insert_input!, $id: uuid!) {
  *                     More info: https://expressjs.com/en/api.html#res
  */
 exports.function = async (req, res) => {
-  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/hge/v1alpha1/graphql';
+  const HGE_ENDPOINT = process.env.HGE_ENDPOINT || 'https://serverless-demo.hasura.app/v1alpha1/graphql';
 
   // handle CORS since this function is triggered from browser
   res.set('Access-Control-Allow-Origin', '*');
