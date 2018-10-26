@@ -1,8 +1,15 @@
 version: '3.6'
 services:
+  postgres:
+    image: postgres:10.5
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
   graphql-engine:
     image: hasura/graphql-engine:pull550-89a94f4
     restart: always
+    depends_on:
+    - "postgres"
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
   caddy:
