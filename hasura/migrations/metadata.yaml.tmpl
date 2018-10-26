@@ -40,8 +40,8 @@ tables:
         payload: '*'
     name: validate_order
     retry_conf:
-      interval_sec: 30
-      num_retries: 5
+      interval_sec: 10
+      num_retries: 100
     webhook: ${VALIDATE_ORDER}
   - definition:
       update:
@@ -50,8 +50,8 @@ tables:
         payload: '*'
     name: restaurant_approval
     retry_conf:
-      interval_sec: 30
-      num_retries: 5
+      interval_sec: 10
+      num_retries: 100
     webhook: ${RESTAURANT_APPROVAL}
   - definition:
       update:
@@ -60,8 +60,8 @@ tables:
         payload: '*'
     name: agent_assignment
     retry_conf:
-      interval_sec: 30
-      num_retries: 5
+      interval_sec: 10
+      num_retries: 100
     webhook: ${AGENT_ASSIGNMENT}
   insert_permissions: []
   object_relationships: []
